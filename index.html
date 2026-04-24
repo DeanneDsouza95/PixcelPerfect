@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gossip Girl Intro</title>
+    <style>
+        /* 1. RESET & BASE STYLES */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body, html {
+            height: 100%;
+            background-color: #000; /* True black for the hidden area */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: none; /* Hides cursor to enhance spotlight feel */
+        }
+
+        /* 2. THE SPOTLIGHT WRAPPER */
+        #spotlight-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000751; /* Requested Navy Blue */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 20px;
+
+            /* The Spotlight Magic */
+            -webkit-mask-image: radial-gradient(
+                circle 180px at var(--x, 50%) var(--y, 50%), 
+                black 0%, 
+                transparent 80%
+            );
+            mask-image: radial-gradient(
+                circle 180px at var(--x, 50%) var(--y, 50%), 
+                black 0%, 
+                transparent 80%
+            );
+        }
+
+        /* 3. TYPOGRAPHY */
+        .non-cursive {
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: 300;
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            letter-spacing: 1px;
+            margin: 5px 0;
+        }
+
+        .cursive {
+            font-family: 'Brush Script MT', 'Apple Chancery', cursive;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: normal;
+            line-height: 1;
+        }
+
+        /* 4. THE ENVELOPE */
+        .envelope-container {
+            margin-top: 40px;
+            perspective: 1000px;
+        }
+
+        #envelope {
+            width: clamp(120px, 15vw, 200px);
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Using a filter to make the envelope look high-end */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+        }
+
+        #envelope:hover {
+            transform: scale(1.1) rotate(-3deg);
+        }
+
+        #envelope:active {
+            transform: scale(0.95);
+        }
+
+        /* Optional: Smooth transition for redirect */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="spotlight-wrapper">
+        <h1 class="non-cursive">hey upper east siders...</h1>
+        
+        <h2 class="cursive">gossip girl here — 
+            <span class="non-cursive" style="font-size: 0.7em; vertical-align: middle;">and i have</span>
+        </h2>
+        
+        <h1 class="non-cursive">the biggest news ever</h1>
+        
+        <div class="envelope-container">
+            <img id="envelope" 
+                 src="-3S.png" 
+                 alt="Envelope">
+        </div>
+    </div>
+
+    <script>
+        const wrapper = document.getElementById('spotlight-wrapper');
+        const envelope = document.getElementById('envelope');
+
+        // Update spotlight coordinates on mouse move
+        window.addEventListener('mousemove', (e) => {
+            wrapper.style.setProperty('--x', e.clientX + 'px');
+            wrapper.style.setProperty('--y', e.clientY + 'px');
+        });
+
+        // Touch support for mobile devices
+        window.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            wrapper.style.setProperty('--x', touch.clientX + 'px');
+            wrapper.style.setProperty('--y', touch.clientY + 'px');
+        });
+
+        // Click interaction
+        envelope.addEventListener('click', () => {
+            document.body.classList.add('fade-out');
+            
+            // Allow time for fade out before "navigation"
+            setTimeout(() => {
+                alert("XOXO, Gossip Girl. Redirecting to landing page...");
+                // window.location.href = "landing.html"; 
+            }, 800);
+        });
+    </script>
+</body>
+</html>
