@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XOXO, Gossip Girl</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #FFFCF6;
+    color: #0015FF;
+    font-family: 'Arial Black', Arial, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed;
+    top: 28px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    z-index: 100;
+    padding: 0 36px;
+  }
+
+  .nav-btn {
+    background: #D9DCFF;
+    border: 1.5px solid #0015FF;
+    color: #0015FF;
+    border-radius: 999px;
+    padding: 7px 36px;
+    font-size: 14px;
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .nav-btn:hover {
+    background: #b5b9f5;
+    transform: scale(1.05);
+  }
+
+  /* ── PAGE 2: LANDING ── */
+  #page2 {
+    position: relative;
+    min-height: 100vh;
+    background: #FFFCF6;
+    display: flex;
+    align-items: flex-start;
+    padding: 110px 52px 60px;
+    overflow: hidden;
+  }
+
+  .xoxo {
+    font-size: clamp(72px, 12vw, 130px);
+    font-weight: 900;
+    color: #0015FF;
+    opacity: 1;
+    line-height: 1;
+    letter-spacing: -3px;
+    font-family: 'Arial Black', Arial, sans-serif;
+    z-index: 2;
+    position: relative;
+    user-select: none;
+  }
+
+  .gossip-girl-bg {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-40%);
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(60px, 10vw, 105px);
+    color: #0015FF;
+    opacity: 0.2;
+    line-height: 1.15;
+    z-index: 1;
+    pointer-events: none;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  /* ── ENVELOPE ── */
+  .envelope-wrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    cursor: pointer;
+    width: 160px;
+    height: 130px;
+  }
+
+  .envelope-wrap:hover .env-body {
+    animation: wiggle 0.55s ease-in-out;
+    filter: drop-shadow(0 6px 18px rgba(0,21,255,0.13));
+  }
+
+  @keyframes wiggle {
+    0%   { transform: rotate(0deg) translateY(0px); }
+    15%  { transform: rotate(-10deg) translateY(-4px); }
+    30%  { transform: rotate(10deg) translateY(-6px); }
+    45%  { transform: rotate(-7deg) translateY(-3px); }
+    60%  { transform: rotate(7deg) translateY(-5px); }
+    75%  { transform: rotate(-4deg) translateY(-2px); }
+    90%  { transform: rotate(3deg) translateY(-1px); }
+    100% { transform: rotate(0deg) translateY(0px); }
+  }
+
+  .env-body {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── PAGE 3: TEA ── */
+  #page3 {
+    min-height: 100vh;
+    background: #FFFCF6;
+    padding: 100px 52px 80px;
+    border-top: 1.5px solid #D9DCFF;
+    position: relative;
+  }
+
+  #page3 .section-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 22px;
+    color: #0015FF;
+    opacity: 0.45;
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+  }
+
+  #page3 h2 {
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 900;
+    color: #0015FF;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 52px;
+    font-family: 'Arial Black', Arial, sans-serif;
+  }
+
+  .tea-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+  }
+
+  .tea-card {
+    background: #D9DCFF;
+    border: 1.5px solid #0015FF;
+    border-radius: 18px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+
+  .tea-card:hover { transform: translateY(-4px); }
+
+  .tea-card .card-date {
+    font-family: 'Dancing Script', cursive;
+    font-size: 14px;
+    color: #0015FF;
+    opacity: 0.55;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .tea-card p {
+    font-family: 'Arial', sans-serif;
+    font-size: 15px;
+    color: #0015FF;
+    line-height: 1.6;
+  }
+
+  .tea-card .xoxo-sign {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    color: #0015FF;
+    opacity: 0.4;
+    margin-top: 16px;
+    display: block;
+  }
+
+  .tea-watermark {
+    position: absolute;
+    bottom: -12px;
+    right: -8px;
+    font-family: 'Dancing Script', cursive;
+    font-size: 64px;
+    color: #0015FF;
+    opacity: 0.06;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* ── PAGE 4: ABOUT ── */
+  #page4 {
+    min-height: 100vh;
+    background: #0015FF;
+    padding: 100px 52px 80px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #page4 .section-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 22px;
+    color: #FFFCF6;
+    opacity: 0.5;
+    margin-bottom: 18px;
+  }
+
+  #page4 h2 {
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 900;
+    color: #FFFCF6;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 32px;
+    font-family: 'Arial Black', Arial, sans-serif;
+  }
+
+  #page4 p {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    color: #D9DCFF;
+    max-width: 560px;
+    line-height: 1.75;
+    margin-bottom: 20px;
+  }
+
+  #page4 .about-sig {
+    font-family: 'Dancing Script', cursive;
+    font-size: 52px;
+    color: #FFFCF6;
+    opacity: 0.85;
+    margin-top: 32px;
+  }
+
+  .about-circle {
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(180px, 28vw, 320px);
+    height: clamp(180px, 28vw, 320px);
+    border-radius: 50%;
+    border: 2px solid rgba(217,220,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .about-circle::before {
+    content: '';
+    position: absolute;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    border: 2px solid rgba(217,220,255,0.15);
+  }
+
+  .about-circle-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(28px, 4vw, 48px);
+    color: rgba(255,252,246,0.18);
+    text-align: center;
+    line-height: 1.2;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-btn" href="#page2">home</a>
+  <a class="nav-btn" href="#page3">tea</a>
+  <a class="nav-btn" href="#page4">about</a>
+</nav>
+
+<!-- PAGE 2: LANDING -->
+<section id="page2">
+  <h1 class="xoxo">XOXO</h1>
+
+  <!-- Envelope -->
+  <div class="envelope-wrap" onclick="document.getElementById('page3').scrollIntoView({behavior:'smooth'})" title="Spill the tea">
+    <svg class="env-body" viewBox="0 0 160 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- envelope body -->
+      <rect x="4" y="22" width="152" height="104" rx="8" fill="#F5EFD6"/>
+      <!-- flap closed -->
+      <polygon points="4,22 80,82 156,22" fill="#EDE4BC"/>
+      <!-- left triangle -->
+      <polygon points="4,22 4,126 62,74" fill="#EAE0BB"/>
+      <!-- right triangle -->
+      <polygon points="156,22 156,126 98,74" fill="#EAE0BB"/>
+      <!-- bottom fold line -->
+      <line x1="4" y1="126" x2="62" y2="74" stroke="#D4C89A" stroke-width="0.75"/>
+      <line x1="156" y1="126" x2="98" y2="74" stroke="#D4C89A" stroke-width="0.75"/>
+      <!-- flap border -->
+      <line x1="4" y1="22" x2="80" y2="82" stroke="#D4C89A" stroke-width="0.75"/>
+      <line x1="156" y1="22" x2="80" y2="82" stroke="#D4C89A" stroke-width="0.75"/>
+      <!-- wax seal outer -->
+      <circle cx="80" cy="80" r="16" fill="#E8849A"/>
+      <!-- wax seal mid -->
+      <circle cx="80" cy="80" r="12" fill="#D4687A"/>
+      <!-- wax seal highlight -->
+      <ellipse cx="76" cy="76" rx="4" ry="3" fill="#F0A0B0" opacity="0.55"/>
+      <!-- wax seal initial -->
+      <text x="80" y="85" text-anchor="middle" font-family="Dancing Script, cursive" font-size="13" fill="#FFFCF6" opacity="0.9">G</text>
+    </svg>
+  </div>
+
+  <div class="gossip-girl-bg">gossip<br>girl</div>
+</section>
+
+<!-- PAGE 3: TEA -->
+<section id="page3">
+  <div class="section-label">the latest...</div>
+  <h2>spill the tea.</h2>
+  <div class="tea-cards">
+    <div class="tea-card">
+      <span class="card-date">Monday, Upper East Side</span>
+      <p>Spotted: a certain blonde socialite making eyes at last season's most eligible bachelor — right in front of his very current girlfriend.</p>
+      <span class="xoxo-sign">xoxo</span>
+      <div class="tea-watermark">☕</div>
+    </div>
+    <div class="tea-card">
+      <span class="card-date">Tuesday, The Met Steps</span>
+      <p>Word has it that the annual Constance fundraiser is hiding a scandal so delicious, even I had to double-check my sources.</p>
+      <span class="xoxo-sign">xoxo</span>
+      <div class="tea-watermark">✉</div>
+    </div>
+    <div class="tea-card">
+      <span class="card-date">Wednesday, The Empire</span>
+      <p>A penthouse suite, an unexpected visitor, and a morning walk of shame. Some things never change on the Upper East Side.</p>
+      <span class="xoxo-sign">xoxo</span>
+      <div class="tea-watermark">♛</div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 4: ABOUT -->
+<section id="page4">
+  <div class="section-label">who am I?</div>
+  <h2>that's the<br>question,<br>isn't it.</h2>
+  <p>I'm the one who sees everything. The whisper at the party, the rumor on your phone, the secret you thought no one knew.</p>
+  <p>I live everywhere and nowhere. I am each and every one of you.</p>
+  <div class="about-sig">xoxo, Gossip Girl</div>
+
+  <div class="about-circle">
+    <span class="about-circle-text">gossip<br>girl</span>
+  </div>
+</section>
+
+</body>
+</html>
