@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 3 - Gossip Girl</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. SECTION LAYOUT */
+        #page3-interactive {
+            position: relative;
+            min-height: 200vh; 
+            background: #FFFCF6;
+            overflow-x: hidden;
+            padding: 100px 52px;
+        }
+
+        /* 2. STICKY GOOGLY EYES */
+        .eyes-container {
+            position: fixed; 
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            gap: 30px;
+            z-index: 999;
+            pointer-events: none; 
+        }
+
+        .eye-socket {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border: 3px solid #000;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .pupil {
+            width: 45px;
+            height: 45px;
+            background: black;
+            border-radius: 50%;
+            position: absolute;
+            top: calc(50% - 22.5px);
+            left: calc(50% - 22.5px);
+        }
+
+        /* 3. DRAGGABLE ENVELOPES */
+        .draggable-envelope {
+            position: absolute;
+            cursor: grab;
+            z-index: 10;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .draggable-envelope:active { cursor: grabbing; }
+
+        .env-img {
+            width: 150px;
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.1));
+        }
+
+        /* 4. GOSSIP PAPER (Hidden) */
+        .gossip-paper {
+            width: 140px;
+            min-height: 180px;
+            background: #FFFCE0;
+            border: 1px solid #d4c89a;
+            box-shadow: 4px 4px 15px rgba(0,0,0,0.1);
+            padding: 15px;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            color: #0015FF;
+            line-height: 1.5;
+            display: none; 
+            transform: rotate(-3deg);
+        }
+
+        /* 5. THE MARQUEE (REFINED) */
+        .marquee-footer {
+            position: fixed;
+            bottom: 0.5in; /* 0.5 inch margin from bottom */
+            left: 0;
+            width: 100%;
+            background: #000751; /* Navy blue background */
+            color: #FFFFFF;
+            padding: 12px 0;
+            overflow: hidden;
+            z-index: 1000;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            white-space: nowrap;
+            font-family: 'Dancing Script', cursive; /* Matches cursive requirement */
+            font-size: 26px;
+            font-weight: 500;
+            animation: marquee-scroll 20s linear infinite;
+        }
+
+        @keyframes marquee-scroll {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+
+<section id="page3-interactive">
+    <div class="eyes-container">
+        <div class="eye-socket"><div class="pupil"></div></div>
+        <div class="eye-socket"><div class="pupil"></div></div>
+    </div>
+
+    <div class="draggable-envelope" style="top: 15%; left: 10%;">
+        <img src="-3S.png" class="env-img" onclick="revealPaper(this)">
+        <div class="gossip-paper">Spotted: S and B at the Met steps. One has a headband, the other has a secret.</div>
+    </div>
+
+    <div class="draggable-envelope" style="top: 35%; left: 70%;">
+        <img src="-3S.png" class="env-img" onclick="revealPaper(this)">
+        <div class="gossip-paper">C just bought another hotel. Does he have room for B?</div>
+    </div>
+
+    <div class="draggable-envelope" style="top: 100%; left: 25%;">
+        <img src="-3S.png" class="env-img" onclick="revealPaper(this)">
+        <div class="gossip-paper">D is writing a book. Let's hope he doesn't mention us.</div>
+    </div>
+
+    <div class="draggable-envelope" style="top: 150%; left: 55%;">
+        <img src="-3S.png" class="env-img" onclick="revealPaper(this)">
+        <div class="gossip-paper">XOXO... you know you love me.</div>
+    </div>
+
+    <div class="marquee-footer">
+        <div class="marquee-content">
+            you know you love me, xoxo gossip girl &nbsp;&nbsp;&nbsp;&nbsp; you know you love me, xoxo gossip girl &nbsp;&nbsp;&nbsp;&nbsp; you know you love me, xoxo gossip girl &nbsp;&nbsp;&nbsp;&nbsp; you know you love me, xoxo gossip girl
+        </div>
+    </div>
+</section>
+
+<script>
+    // 1. EYE MOVEMENT
+    const pupils = document.querySelectorAll('.pupil');
+    window.addEventListener('mousemove', (e) => {
+        pupils.forEach(pupil => {
+            const eye = pupil.parentElement;
+            const rect = eye.getBoundingClientRect();
+            const eyeX = rect.left + rect.width / 2;
+            const eyeY = rect.top + rect.height / 2;
+            const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
+            const maxMove = 22; 
+            const x = Math.cos(angle) * maxMove;
+            const y = Math.sin(angle) * maxMove;
+            pupil.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    });
+
+    // 2. DRAGGABLE LOGIC
+    let activeDrag = null;
+    let startX, startY, startLeft, startTop;
+
+    document.querySelectorAll('.draggable-envelope').forEach(item => {
+        item.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('gossip-paper')) return;
+            activeDrag = item;
+            item.style.zIndex = 500;
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = item.offsetLeft;
+            startTop = item.offsetTop;
+
+            const onMouseMove = (moveEvent) => {
+                if (!activeDrag) return;
+                activeDrag.style.left = (startLeft + (moveEvent.clientX - startX)) + "px";
+                activeDrag.style.top = (startTop + (moveEvent.clientY - startY)) + "px";
+            };
+
+            const onMouseUp = () => {
+                if (activeDrag) activeDrag.style.zIndex = 10;
+                activeDrag = null;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    });
+
+    // 3. REVEAL PAPER
+    function revealPaper(img) {
+        const paper = img.nextElementSibling;
+        paper.style.display = (paper.style.display === 'block') ? 'none' : 'block';
+    }
+</script>
+
+</body>
+</html>
